@@ -1,8 +1,12 @@
 package com.example.historylocal.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import org.hibernate.annotations.CreationTimestamp;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -14,15 +18,26 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Tiêu đề không được để trống")
     private String title;
 
+
     @Column(columnDefinition = "TEXT")
+    @NotBlank(message = "Nội dung không được để trống")
     private String content;
 
+    @NotBlank(message = "Vị trí không được để trống")
     private String location;
 
-    private String eventDate;
+    @Past(message = "Phải là ngày trong quá khứ")
+    private LocalDate eventDate;
+
+    @Column(updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public Post() {
+    }
 
     public Long getId() {
         return id;
@@ -56,11 +71,11 @@ public class Post {
         this.location = location;
     }
 
-    public String getEventDate() {
+    public LocalDate getEventDate() {
         return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(LocalDate eventDate) {
         this.eventDate = eventDate;
     }
 
@@ -72,15 +87,15 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public Post(Long id, LocalDateTime createdAt, String eventDate, String location, String content, String title) {
+    public Post(Long id, String title, String content, String location, LocalDate eventDate, LocalDateTime createdAt) {
         this.id = id;
-        this.createdAt = createdAt;
-        this.eventDate = eventDate;
-        this.location = location;
-        this.content = content;
         this.title = title;
-    }
+        this.content = content;
+        this.location = location;
+        this.eventDate = eventDate;
+        this.createdAt = createdAt;
 
-    public Post() {
+
+
     }
 }
