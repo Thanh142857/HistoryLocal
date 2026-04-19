@@ -1,9 +1,10 @@
 package com.example.historylocal.Controller;
 
 
-import com.example.historylocal.Interface.postRepo;
+import com.example.historylocal.repository.postRepo;
 import com.example.historylocal.entity.Post;
 
+import com.example.historylocal.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,13 @@ public class PostController {
 
     @Autowired
     private postRepo postRepository;
+    @Autowired
+    private PostService postService;
 
     @GetMapping
     public Page<Post> getAll(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
-
-    ;
 
     @PostMapping
     public Post create(@RequestBody @Valid Post post) {
@@ -32,8 +33,8 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public Page<Post> search( String location, Pageable pageable) {
-        return postRepository.findByLocation(location, pageable);
+    public Page<Post> search( @RequestParam String location, Pageable pageable) {
+        return postService.search(location, pageable);
     }
 
     @GetMapping("/{id}")
