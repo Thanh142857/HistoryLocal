@@ -1,6 +1,7 @@
 package com.example.historylocal.Controller;
 
 
+import com.example.historylocal.dto.PostReponse;
 import com.example.historylocal.repository.postRepo;
 import com.example.historylocal.entity.Post;
 
@@ -33,7 +34,7 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public Page<Post> search( @RequestParam String location, Pageable pageable) {
+    public Page<PostReponse> search(@RequestParam String location, Pageable pageable) {
         return postService.search(location, pageable);
     }
 

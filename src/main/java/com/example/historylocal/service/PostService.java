@@ -1,6 +1,7 @@
 package com.example.historylocal.service;
 
 
+import com.example.historylocal.dto.PostReponse;
 import com.example.historylocal.repository.postRepo;
 import com.example.historylocal.entity.Post;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,11 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Page<Post> search(String location, Pageable pageable) {
-        return postRepository.findByLocationContainingIgnoreCase(location, pageable);
+    public Page<PostReponse> search(String location, Pageable pageable) {
+        return postRepository.findByLocationContainingIgnoreCase(location, pageable).map(post -> new PostReponse(
+                post.getId(),
+                post.getTitle(),
+                post.getLocation()
+        ));
     }
 }
