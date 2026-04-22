@@ -1,7 +1,8 @@
 package com.example.historylocal.Controller;
 
 
-import com.example.historylocal.dto.PostReponse;
+import com.example.historylocal.dto.PostResponse;
+import com.example.historylocal.dto.PostRequest;
 import com.example.historylocal.repository.postRepo;
 import com.example.historylocal.entity.Post;
 
@@ -29,12 +30,13 @@ public class PostController {
     }
 
     @PostMapping
-    public Post create(@RequestBody @Valid Post post) {
-        return postRepository.save(post);
+    public Post create(@RequestBody @Valid PostRequest request) {
+
+        return postService.create(request);
     }
 
     @GetMapping("/search")
-    public Page<PostReponse> search(@RequestParam String location, Pageable pageable) {
+    public Page<PostResponse> search(@RequestParam String location, Pageable pageable) {
         return postService.search(location, pageable);
     }
 

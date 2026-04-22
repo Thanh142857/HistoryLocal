@@ -1,11 +1,11 @@
 package com.example.historylocal.dto;
 
-public class PostReponse {
+public class PostResponse {
     private Long id;
     private String title;
     private String location;
 
-    public PostReponse(Long id, String title, String location) {
+    public PostResponse(Long id, String title, String location) {
         this.id = id;
         this.title = title;
         this.location = location;
