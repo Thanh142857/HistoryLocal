@@ -31,7 +31,6 @@ public class PostController {
 
     @PostMapping
     public Post create(@RequestBody @Valid PostRequest request) {
-
         return postService.create(request);
     }
 
@@ -46,30 +45,15 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
-        postRepository.deleteById(id);
+    public String deleteById(@PathVariable Long id) {
+        postService.deleteById(id);
+        return "Đã xóa thành công";
     }
 
     @PutMapping("/{id}")
-    public Post update(@PathVariable Long id, @RequestBody Post postRequest) {
-       Post post = postRepository.findById(id).orElse(null);
-        if (post == null){
-            return null;
-        }
+    public Post update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
 
-        if (postRequest.getTitle()!= null) {
-            post.setTitle(postRequest.getTitle());
-        }
-        if (postRequest.getContent()!= null) {
-            post.setContent(postRequest.getContent());
-        }
-        if (postRequest.getLocation()!= null) {
-            post.setLocation(postRequest.getLocation());
-        }
-        if (postRequest.getEventDate()!= null) {
-            post.setEventDate(postRequest.getEventDate());
-        }
-        return postRepository.save(post);
+        return postService.update(id, request);
 
     }
 }
