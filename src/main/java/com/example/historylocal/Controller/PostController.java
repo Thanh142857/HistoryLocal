@@ -3,6 +3,7 @@ package com.example.historylocal.Controller;
 
 import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
+import com.example.historylocal.dto.searchDTO;
 import com.example.historylocal.repository.postRepo;
 import com.example.historylocal.entity.Post;
 
@@ -25,23 +26,23 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public Page<Post> getAll(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<searchDTO> getAll(Pageable pageable) {
+        return postService.getAll(pageable);
     }
 
     @PostMapping
-    public Post create(@RequestBody @Valid PostRequest request) {
+    public PostResponse create(@RequestBody @Valid PostRequest request) {
         return postService.create(request);
     }
 
     @GetMapping("/search")
-    public Page<PostResponse> search(@RequestParam String location, Pageable pageable) {
+    public Page<searchDTO> search(@RequestParam String location, Pageable pageable) {
         return postService.search(location, pageable);
     }
 
     @GetMapping("/{id}")
-    public Post getById(@PathVariable Long id) {
-        return postRepository.findById(id).orElse(null);
+    public PostResponse getById(@PathVariable Long id) {
+        return postService.getById(id);
     }
 
     @DeleteMapping("/{id}")
@@ -51,9 +52,9 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Post update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
-
+    public PostResponse update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
         return postService.update(id, request);
-
     }
+
+
 }
