@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class PostService {
     private final postRepo postRepository;
@@ -28,12 +30,37 @@ public class PostService {
         );
     }
 
-    public Page<searchDTO> search(String location, Pageable pageable) {
-        return postRepository.findByLocationContainingIgnoreCase(location, pageable).map(post -> new searchDTO(
-                post.getId(),
-                post.getTitle(),
-                post.getLocation()
-        ));
+    public Page<searchDTO> search(String location, Pageable pageable, LocalDate eventDate) {
+
+        if (location != null && eventDate != null) {
+            return postRepository.findByLocationContainingIgnoreCaseAndEventDate(location, eventDate, pageable)
+                    .map(post -> new searchDTO(
+                            post.getId(),
+                            post.getTitle(),
+                            post.getLocation()
+                    ));
+        }
+        if (location !=null) {
+            return postRepository.findByLocationContainingIgnoreCase(location, pageable).map(post -> new searchDTO(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getLocation()
+            ));
+        }
+        if (eventDate != null) {
+            return postRepository.findByEventDate(eventDate, pageable).map(post -> new searchDTO(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getLocation()
+            ));
+
+        }
+        return postRepository.findAll( pageable)
+                .map(post -> new searchDTO(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getLocation()
+                ));
     }
     public PostResponse create(PostRequest request) {
         Post post = new Post();

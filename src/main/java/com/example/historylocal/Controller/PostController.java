@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 
 @RestController
 @RequestMapping("/posts")
@@ -36,8 +38,14 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public Page<searchDTO> search(@RequestParam String location, Pageable pageable) {
-        return postService.search(location, pageable);
+    public Page<searchDTO> search(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false)
+            @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
+            LocalDate eventDate,
+            Pageable pageable
+    ) {
+        return postService.search(location, pageable, eventDate);
     }
 
     @GetMapping("/{id}")
