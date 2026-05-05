@@ -1,6 +1,7 @@
 package com.example.historylocal.service;
 
 
+import com.example.historylocal.dto.PostMapper;
 import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
 import com.example.historylocal.dto.searchDTO;
@@ -22,11 +23,7 @@ public class PostService {
     }
     public Page<searchDTO> getAll(Pageable pageable) {
         return postRepository.findAll(pageable).map(
-                post -> new searchDTO(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getLocation()
-                )
+                PostMapper ::toSearchDTO
         );
     }
 
@@ -34,33 +31,17 @@ public class PostService {
 
         if (location != null && eventDate != null) {
             return postRepository.findByLocationContainingIgnoreCaseAndEventDate(location, eventDate, pageable)
-                    .map(post -> new searchDTO(
-                            post.getId(),
-                            post.getTitle(),
-                            post.getLocation()
-                    ));
+                    .map(PostMapper ::toSearchDTO);
         }
         if (location !=null) {
-            return postRepository.findByLocationContainingIgnoreCase(location, pageable).map(post -> new searchDTO(
-                    post.getId(),
-                    post.getTitle(),
-                    post.getLocation()
-            ));
+            return postRepository.findByLocationContainingIgnoreCase(location, pageable).map(PostMapper ::toSearchDTO);
         }
         if (eventDate != null) {
-            return postRepository.findByEventDate(eventDate, pageable).map(post -> new searchDTO(
-                    post.getId(),
-                    post.getTitle(),
-                    post.getLocation()
-            ));
+            return postRepository.findByEventDate(eventDate, pageable).map(PostMapper ::toSearchDTO);
 
         }
         return postRepository.findAll( pageable)
-                .map(post -> new searchDTO(
-                        post.getId(),
-                        post.getTitle(),
-                        post.getLocation()
-                ));
+                .map(PostMapper ::toSearchDTO);
     }
     public PostResponse create(PostRequest request) {
         Post post = new Post();
@@ -71,13 +52,7 @@ public class PostService {
 
         Post saved = postRepository.save(post);
 
-        return new PostResponse(
-                saved.getId(),
-                saved.getTitle(),
-                saved.getLocation(),
-                saved.getCreatedAt(),
-                saved.getEventDate()
-        );
+        return PostMapper.toPostResponse(saved);
     }
 
     public PostResponse update( Long id,  PostRequest request) {
@@ -91,13 +66,7 @@ public class PostService {
 
         Post updated = postRepository.save(post);
 
-        return new PostResponse(
-                updated.getId(),
-                updated.getTitle(),
-                updated.getLocation(),
-                updated.getCreatedAt(),
-                updated.getEventDate()
-        );
+        return PostMapper.toPostResponse(updated);
 
     }
 
@@ -111,12 +80,6 @@ public class PostService {
     public PostResponse getById( Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
-        return new PostResponse(
-                post.getId(),
-                post.getTitle(),
-                post.getLocation(),
-                post.getCreatedAt(),
-                post.getEventDate()
-        );
+        return PostMapper.toPostResponse(post);
     }
 }
