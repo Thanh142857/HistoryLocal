@@ -1,6 +1,7 @@
 package com.example.historylocal.Controller;
 
 
+import com.example.historylocal.dto.ApiResponse;
 import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
 import com.example.historylocal.dto.searchDTO;
@@ -33,8 +34,9 @@ public class PostController {
     }
 
     @PostMapping
-    public PostResponse create(@RequestBody @Valid PostRequest request) {
-        return postService.create(request);
+    public ApiResponse<PostResponse> create(@RequestBody @Valid PostRequest request) {
+        PostResponse data = postService.create(request);
+        return new ApiResponse<>("Tạo mới thành công",data);
     }
 
     @GetMapping("/search")

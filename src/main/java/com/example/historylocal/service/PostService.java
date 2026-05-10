@@ -6,6 +6,7 @@ import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
 import com.example.historylocal.dto.searchDTO;
 import com.example.historylocal.entity.Post;
+import com.example.historylocal.exception.NotFoundException;
 import com.example.historylocal.repository.postRepo;
 
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class PostService {
     }
 
     public PostResponse update( Long id,  PostRequest request) {
-        Post post = postRepository.findById(id).orElseThrow(()-> new RuntimeException("Không tìm thấy bài viết"));
+        Post post = postRepository.findById(id).orElseThrow(()-> new NotFoundException("Không tìm thấy bài viết"));
 
         post.setTitle(request.getTitle());
         post.setLocation(request.getLocation());
@@ -72,14 +73,14 @@ public class PostService {
 
     public void deleteById(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy bài viết"));
         postRepository.delete(post);
     }
 
 
     public PostResponse getById( Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài viết"));
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy bài viết"));
         return PostMapper.toPostResponse(post);
     }
 }

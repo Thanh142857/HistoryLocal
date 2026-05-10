@@ -16,6 +16,7 @@ public class PostMapper {
                 post.getId(),
                 post.getTitle(),
                 post.getLocation(),
+                post.getContent(),
                 post.getCreatedAt(),
                 post.getEventDate()
         );
