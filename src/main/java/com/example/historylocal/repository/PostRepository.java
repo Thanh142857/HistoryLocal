@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDate;
 
 
-public interface postRepo extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByLocationContainingIgnoreCase(String location, Pageable pageable);
     Page<Post> findByLocationContainingIgnoreCaseAndEventDate(String location, LocalDate eventDate, Pageable pageable);
     Page<Post> findByEventDate(LocalDate eventDate, Pageable pageable);

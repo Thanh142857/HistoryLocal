@@ -3,8 +3,8 @@ package com.example.historylocal.dto;
 import com.example.historylocal.entity.Post;
 
 public class PostMapper {
-    public static searchDTO toSearchDTO(Post post) {
-        return new searchDTO(
+    public static SearchDTO toSearchDTO(Post post) {
+        return new SearchDTO(
                 post.getId(),
                 post.getTitle(),
                 post.getLocation()

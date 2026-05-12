@@ -4,10 +4,10 @@ package com.example.historylocal.service;
 import com.example.historylocal.dto.PostMapper;
 import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
-import com.example.historylocal.dto.searchDTO;
+import com.example.historylocal.dto.SearchDTO;
 import com.example.historylocal.entity.Post;
 import com.example.historylocal.exception.NotFoundException;
-import com.example.historylocal.repository.postRepo;
+import com.example.historylocal.repository.PostRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,18 +17,18 @@ import java.time.LocalDate;
 
 @Service
 public class PostService {
-    private final postRepo postRepository;
+    private final PostRepository postRepository;
 
-    public PostService(postRepo postRepository){
+    public PostService(PostRepository postRepository){
         this.postRepository = postRepository;
     }
-    public Page<searchDTO> getAll(Pageable pageable) {
+    public Page<SearchDTO> getAll(Pageable pageable) {
         return postRepository.findAll(pageable).map(
                 PostMapper ::toSearchDTO
         );
     }
 
-    public Page<searchDTO> search(String location, Pageable pageable, LocalDate eventDate) {
+    public Page<SearchDTO> search(String location, Pageable pageable, LocalDate eventDate) {
 
         if (location != null && eventDate != null) {
             return postRepository.findByLocationContainingIgnoreCaseAndEventDate(location, eventDate, pageable)

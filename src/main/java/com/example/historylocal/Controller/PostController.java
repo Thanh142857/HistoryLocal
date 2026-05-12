@@ -4,9 +4,9 @@ package com.example.historylocal.Controller;
 import com.example.historylocal.dto.ApiResponse;
 import com.example.historylocal.dto.PostResponse;
 import com.example.historylocal.dto.PostRequest;
-import com.example.historylocal.dto.searchDTO;
-import com.example.historylocal.repository.postRepo;
+import com.example.historylocal.dto.SearchDTO;
 import com.example.historylocal.entity.Post;
+import com.example.historylocal.repository.PostRepository;
 
 import com.example.historylocal.service.PostService;
 import jakarta.validation.Valid;
@@ -24,12 +24,13 @@ import java.time.LocalDate;
 public class PostController {
 
     @Autowired
-    private postRepo postRepository;
+    private PostRepository postRepository;
     @Autowired
     private PostService postService;
 
+
     @GetMapping
-    public Page<searchDTO> getAll(Pageable pageable) {
+    public Page<SearchDTO> getAll(Pageable pageable) {
         return postService.getAll(pageable);
     }
 
@@ -40,7 +41,7 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public Page<searchDTO> search(
+    public Page<SearchDTO> search(
             @RequestParam(required = false) String location,
             @RequestParam(required = false)
             @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
@@ -51,19 +52,21 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostResponse getById(@PathVariable Long id) {
-        return postService.getById(id);
+    public ApiResponse<PostResponse> getById(@PathVariable Long id) {
+        PostResponse data = postService.getById(id);
+        return new ApiResponse<>("Lấy bài viết thành công",data);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteById(@PathVariable Long id) {
+    public ApiResponse<?> deleteById(@PathVariable Long id) {
         postService.deleteById(id);
-        return "Đã xóa thành công";
+        return new ApiResponse<>("Lấy bài viết thành công", null);
     }
 
     @PutMapping("/{id}")
-    public PostResponse update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
-        return postService.update(id, request);
+    public ApiResponse<PostResponse> update(@PathVariable Long id, @RequestBody @Valid PostRequest request) {
+        PostResponse data = postService.update(id, request);
+        return new ApiResponse<>("Cập nhật bài viết thành công", data);
     }
 
 
