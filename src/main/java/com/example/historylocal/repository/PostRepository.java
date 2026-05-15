@@ -12,4 +12,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByLocationContainingIgnoreCase(String location, Pageable pageable);
     Page<Post> findByLocationContainingIgnoreCaseAndEventDate(String location, LocalDate eventDate, Pageable pageable);
     Page<Post> findByEventDate(LocalDate eventDate, Pageable pageable);
+    Page<Post> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }

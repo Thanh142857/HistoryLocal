@@ -46,9 +46,10 @@ public class PostController {
             @RequestParam(required = false)
             @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
             LocalDate eventDate,
+            String title,
             Pageable pageable
     ) {
-        return postService.search(location, pageable, eventDate);
+        return postService.search(location, pageable, eventDate, title);
     }
 
     @GetMapping("/{id}")

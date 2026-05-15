@@ -28,7 +28,7 @@ public class PostService {
         );
     }
 
-    public Page<SearchDTO> search(String location, Pageable pageable, LocalDate eventDate) {
+    public Page<SearchDTO> search(String location, Pageable pageable, LocalDate eventDate, String title) {
 
         if (location != null && eventDate != null) {
             return postRepository.findByLocationContainingIgnoreCaseAndEventDate(location, eventDate, pageable)
@@ -40,6 +40,9 @@ public class PostService {
         if (eventDate != null) {
             return postRepository.findByEventDate(eventDate, pageable).map(PostMapper ::toSearchDTO);
 
+        }
+        if (title != null) {
+            return postRepository.findByTitleContainingIgnoreCase(title, pageable).map(PostMapper ::toSearchDTO);
         }
         return postRepository.findAll( pageable)
                 .map(PostMapper ::toSearchDTO);
